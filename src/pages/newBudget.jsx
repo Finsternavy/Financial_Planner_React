@@ -1,6 +1,8 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../components/newBudget.css"
+import Row from "../components/row"
+import Popup from "../components/popup"
 
 
 const NewBudget = () => {
@@ -20,6 +22,8 @@ const NewBudget = () => {
     const [expenseRows, setExpenseRows] = useState([])
     const [index, setIndex] = useState(0)
     const [surplus, setSurplus] = useState(0)
+    const [popup, setPopup] = useState(false)
+    const [editIndex, setEditIndex] = useState(0)
 
     // these values are used to reset input fields after submitting the changes to the lists (income / expenses)
     const incomeSourceField = useRef(null)
@@ -67,10 +71,11 @@ const NewBudget = () => {
         }else if (incomeRow.frequency === '/annualy'){
             convertedIncome = incomeRow.value / 12
         }else{
-            convertedIncome = incomeRow.value
+            convertedIncome = parseFloat(incomeRow.value)
         }
+        convertedIncome = convertedIncome.toFixed(2)
         let copy = incomeRow
-        copy['value'] = parseFloat(convertedIncome)
+        copy['value'] = parseFloat(convertedIncome).toFixed(2)
         console.log(convertedIncome)
         setIncomeRow(prev => prev = copy) 
     }
@@ -111,7 +116,7 @@ const NewBudget = () => {
     }
     
     const updateExpenseValue = () => {
-        let convertedExpense = expenseRow.expenseValue
+        let convertedExpense = parseFloat(expenseRow.expenseValue).toFixed(2)
         
         console.log(expenseRow.expenseValue.type)
         let copy = expenseRow
@@ -168,12 +173,52 @@ const NewBudget = () => {
         }
     }
 
-    const editRow = (rowIndex) => {
-        alert({})
+    const editIncomeRow = (changes) => {
+        if (changes.source != ""){
+            console.log(changes)
+            let count = 0
+            let newValue = parseFloat(changes.value)
+            incomeRows.forEach(element => {
+                console.log(element.index)
+                console.log(editIndex)
+                if (element.index === editIndex){
+                    let copy = [...incomeRows]
+                    // set these equal to something in some way. Need some method of user providing data
+                    copy[count].source = changes.source
+                    copy[count].value = parseFloat(changes.value).toFixed(2)
+                    setIncomeRows(copy)
+                    togglePopup()
+                    return
+                }
+                count += 1
+            });
+        }
+        togglePopup()
     }
 
-    const deleteRow = (rowIndex) => {
+    const togglePopup = (rowIndex) => {
+        if (popup){
+            setPopup(false)
+            return
+        }
+        let newindex = parseFloat(rowIndex)
+        setEditIndex(newindex)
+        setPopup(true)
+    }
 
+    const deleteIncomeRow = (rowIndex) => {
+        let count = 0
+        incomeRows.forEach(element => {
+            console.log(element.index)
+            if (element.index === rowIndex){
+                let copy = [...incomeRows]
+                copy.splice(count, 1)
+                setIncomeRows(copy)
+            }
+            count += 1
+        });{
+
+        }
     }
 
     return (
@@ -198,9 +243,12 @@ const NewBudget = () => {
                     incomeRow.frequency === '/hourly' && <input ref={hoursField} name='hours' onChange={incomeRowChange} type="number" step={"0"} placeholder="Hours a week"/>
                 }
             </div>
-            
 
             {/* template data for testing only ---- remove when implementing logic  ------  */}
+            {
+                popup &&
+                <Popup edit={editIncomeRow} toggle={togglePopup}></Popup>
+            }
             <table className="income-table table">
                 <tbody>
                     <tr>
@@ -212,17 +260,19 @@ const NewBudget = () => {
                         </th>
                     </tr>
                     {
+                        //convert to custom row component
                         incomeRows.map((incomeRow) => (
-                        <tr key={incomeRow.index} className="income-row row">
-                            <td key={incomeRow.source}>{incomeRow.source}</td>
-                            <td key={incomeRow.value} className="income-data data">${incomeRow.value.toFixed(2)}</td>
-                            {/* <td key={incomeRow.index + incomeRow.source} className="crud-col">
-                                <button className="row-btn" onClick={editRow}>Edit</button>
-                            </td>
-                            <td key={incomeRow.index + incomeRow.source + incomeRow.index} className="crud-col" onClick={deleteRow}>
-                                <button className="row-btn">X</button>
-                            </td> */}
-                        </tr>
+                            <Row key={incomeRow.index} data={incomeRow} delete={deleteIncomeRow} toggle={togglePopup}></Row>
+                        // <tr key={incomeRow.index} className="income-row row">
+                        //     <td key={incomeRow.source}>{incomeRow.source}</td>
+                        //     <td key={incomeRow.value} className="income-data data">${incomeRow.value.toFixed(2)}</td>
+                        //     <td key={incomeRow.index + incomeRow.source} className="crud-col">
+                        //         <button className="row-btn" onClick={editRow}>Edit</button>
+                        //     </td>
+                        //     <td key={incomeRow.index + incomeRow.source + incomeRow.index} className="crud-col" onClick={deleteRow}>
+                        //         <button className="row-btn">X</button>
+                        //     </td>
+                        // </tr>
                         ))
                     }
                     {/* <td>Employment</td><td className="income-data data">$4,000.00 / Monthly</td> */}

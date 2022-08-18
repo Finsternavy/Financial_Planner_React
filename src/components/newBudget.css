@@ -69,7 +69,6 @@ hr{
     width: 100%;
     margin-bottom: 40px;
     display: table;
-    table-layout: fixed;
 }
 .table td{
     background-color: var(--btn-color-logout);
@@ -136,7 +135,7 @@ hr{
 .row-btn{
     height: 100%;
     width: 100%;
-    border-radius: 0;
+    border-radius: 0!important;
 }
 .row-btn:hover{
     background-color: var(--primary-color);
