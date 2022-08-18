@@ -1,4 +1,3 @@
-import Popup from "./popup"
 
 
 const Row = (props) => {
@@ -13,15 +12,6 @@ const Row = (props) => {
 
     const deleteRow = () => {
         props.delete(props.data.index)
-    }
-
-    const editRow = (changes) => {
-        props.edit(props.data.index, changes)
-    }
-
-    const cancel = () => {
-        const edit = document.querySelector('.popup')
-        edit.classList.remove(".show")
     }
 
     return(

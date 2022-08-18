@@ -6,12 +6,13 @@ import Popup from "../components/popup"
 
 
 const NewBudget = () => {
-
+    const [index, setIndex] = useState(0)
     const [incomeRow, setIncomeRow] = useState({
         source: "",
         value: 0,
         frequency: '/monthly',
         hours: 0,
+        index: 0,
     })
     const [incomeRows, setIncomeRows] = useState([])
     const [expenseRow, setExpenseRow] = useState({
@@ -20,7 +21,7 @@ const NewBudget = () => {
         expensePriority: 1,
     })
     const [expenseRows, setExpenseRows] = useState([])
-    const [index, setIndex] = useState(0)
+    
     const [surplus, setSurplus] = useState(0)
     const [popup, setPopup] = useState(false)
     const [editIndex, setEditIndex] = useState(0)
@@ -174,10 +175,9 @@ const NewBudget = () => {
     }
 
     const editIncomeRow = (changes) => {
-        if (changes.source != ""){
+        if (changes.source !== ""){
             console.log(changes)
             let count = 0
-            let newValue = parseFloat(changes.value)
             incomeRows.forEach(element => {
                 console.log(element.index)
                 console.log(editIndex)
@@ -193,8 +193,14 @@ const NewBudget = () => {
                 count += 1
             });
         }
+        // need a function to recalculate surplus
         togglePopup()
     }
+
+    //need a function to calculate total of all income rows
+
+
+    // need a function to calculate total of all expense rows
 
     const togglePopup = (rowIndex) => {
         if (popup){
@@ -216,9 +222,7 @@ const NewBudget = () => {
                 setIncomeRows(copy)
             }
             count += 1
-        });{
-
-        }
+        });
     }
 
     return (
