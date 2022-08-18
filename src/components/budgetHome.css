@@ -1,0 +1,48 @@
+.budget-home .budget-tile-container :nth-child(1){
+    grid-column: 1 / 1!important;
+}
+.budget-select{
+    position: relative;
+    justify-content: center;
+    display: flex;
+}
+.budget-home-container > *{
+    height: 100%;
+    width: 100%;
+}
+.budget-home-container > * > * {
+    font-size: 1.4rem!important;
+}
+.saved-budget-dropdown{
+    position: absolute;
+    height: 40px;
+    width: calc(100% - 80px);
+    border-radius: 10px;
+    bottom: 20px;
+    background-color: var(--background-color);
+    color: var(--income-secondary-color);
+    border: none;
+    box-shadow: inset 0 0 5px 5px rgba(0, 0, 0, .3);
+    text-align: center;
+}
+.saved-budget-dropdown > *{
+    font-size: 16px!important;
+    text-align: center;
+}
+.saved-budget-dropdown:focus,
+.saved-budget-dropdown:active{
+    border: none;
+    outline: none;
+}
+.budget-home .tile-btn-container .tile-btn{
+    border: none;
+}
+.budget-home .budget-tile-container :nth-child(2) .tile-btn-container .tile-btn{
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+.budget-tile-container .tile-btn-container .tile-btn:hover{
+    background-color: var(--background-color)!important;
+    color: var(--income-secondary-color)!important;
+    box-shadow: 0 0 5px 0 var(--income-secondary-color);
+}

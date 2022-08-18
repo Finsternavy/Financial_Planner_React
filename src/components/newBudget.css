@@ -1,0 +1,143 @@
+.new-budget .add-line-tool{
+    display: grid;
+    grid-template-columns: calc(33% - 10px) repeat(2, calc(33% - 5px));
+    gap: 10px;
+    margin-bottom: 40px;
+}
+.new-budget .add-line-tool > *{
+    min-width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    background-color: var(--secondary-color);
+}
+.new-budget .add-line-tool > *:active,
+.new-budget .add-line-tool > *:focus{
+    border: none;
+    outline: none;
+    box-shadow: inset 0 0 5px 3px var(--income-secondary-color);
+}
+.new-budget .add-line-tool input::placeholder{
+    font-weight: 700;
+}
+.add-btn-container{
+    border-radius: 10px;
+    overflow: hidden;
+    outline: 3px solid var(--primary-color);
+}
+.add-btn-container:hover,
+.add-btn-container:hover > button{
+    outline: 3px solid var(--income-secondary-color);
+    color: var(--income-secondary-color);
+}
+.add-expense-container:hover,
+.add-btn-container:hover > .add-expense{
+    outline: 3px solid var(--expense-primary-color);
+    color: var(--expense-primary-color);
+}
+hr{
+    border:1px solid var(--nav-light);
+    margin-bottom: 40px;
+}
+.add-btn-container button{
+    background-color: var(--background-color);
+    border: none;
+    color: var(--primary-color);
+    font-size: 5rem;
+}
+.expense-btn:hover,
+.expense-btn:focus{
+    color: var(--expense-primary-color);
+
+}
+.new-budget .add-line-tool > *::placeholder{
+    color: var(--text-dark);
+}
+.new-budget .add-line-tool :nth-child(1){
+    grid-row: 1 / 3;
+    min-height: 100%;
+    min-width: 100%;
+}
+.new-budget .add-line-tool :nth-child(2){
+    grid-column: 2 / 4;
+}
+.new-budget .add-line-tool :nth-last-child(1){
+    grid-column: 3 / 4;
+}
+.table{
+    width: 100%;
+    margin-bottom: 40px;
+    display: table;
+    table-layout: fixed;
+}
+.table td{
+    background-color: var(--btn-color-logout);
+    border: 1px solid black;
+    height: 40px;
+}
+.table tbody :nth-child(1) :nth-child(1){
+    border-radius: 10px 0 0 0;
+}
+.table tbody :nth-last-child(1) :nth-last-child(1){
+    border-radius: 0 0 10px;
+}
+.table tbody :nth-child(1) :nth-last-child(1){
+    border-radius:  0 10px 0 0;
+}
+.table tbody :nth-last-child(1) :nth-child(1){
+    border-radius: 0 0 0 10px;
+}
+.table tbody :only-child :nth-child(1){
+    border-radius: 10px 0 0 10px;
+}
+.table tbody :only-child :nth-last-child(1){
+    border-radius: 0 10px 10px 0;
+}
+.expense-table tbody :nth-child(even) .expense-data{
+    background-color: var(--expense-secondary-color);
+}
+.expense-table :nth-child(odd) .expense-data{
+    background-color: var(--expense-primary-color);
+}
+.income-table tbody :nth-child(even) .income-data{
+    background-color: var(--income-primary-color);
+}
+.income-table :nth-child(odd) .income-data{
+    background-color: var(--income-secondary-color);
+}
+.surplus-table :only-child .data{
+    background-color: var(--income-primary-color);
+}
+.surplus-table.surplus tbody tr .surplus-data{
+    background-color: var(--income-primary-color);
+}
+.surplus-table.deficit tbody tr .surplus-data{
+    background-color: var(--expense-primary-color)!important;
+}
+.table-header{
+    color: var(--background-color);
+    border: 1px solid var(--background-color);
+    background-color: var(--primary-color);
+    padding: 3px;
+    font-size: .8rem;
+}
+.left-t-header{
+    /* border-top: 1px solid var(--primary-color); */
+    border-radius: 10px 0 0 0;
+}
+.right-t-header{
+    /* border: 1px solid var(--primary-color); */
+    border-radius: 0 10px 0 0;
+}
+.income-table.table .income-row .crud-col{
+    width: 10%;
+}
+.row-btn{
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+}
+.row-btn:hover{
+    background-color: var(--primary-color);
+}

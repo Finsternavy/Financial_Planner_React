@@ -1,0 +1,28 @@
+.mortgage-calculator .form{
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    gap: 20px;
+}
+.mortgage-calculator .form > *{
+    height: 40px;
+    margin-bottom: 0;
+}
+.mortgage-calculator .form :nth-child(1),
+.mortgage-calculator .form :nth-child(4),
+.mortgage-calculator .form :nth-child(5),
+.mortgage-calculator .form :nth-child(6),
+.mortgage-calculator .form :nth-last-child(1){
+    grid-column: 1 / 3;
+}
+.dropdown{
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    text-align: center;
+    font-weight: 700;
+}
+.dropdown:active,
+.dropdown:focus{
+    outline: none;
+    border: 1px solid var(--background-color);
+    box-shadow: 0 0 5px 3px var(--income-secondary-color);
+}

@@ -1,0 +1,71 @@
+.tile-container{
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, calc(50% - 10px));
+    grid-template-rows: repeat(3, 200px);
+    align-items: center center;
+    gap: 20px;
+}
+.tile-btn{
+    cursor: pointer;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: var(--accent-color-2);
+    color: var(--text-light);
+    font-size: 1.5rem;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 1px 5px 1px var(--text-dark);
+    transition: outline-color .3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;
+}
+.tile-container :nth-child(1){
+    grid-column: 1 / 3!important;
+}
+.tile-container :nth-child(1) .tile-btn{
+    background-color: var(--background-color);
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 3px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.tile-container :nth-child(2) .tile-btn,
+.tile-container :nth-child(5) .tile-btn{
+    background-color: var(--accent-color);
+}
+.tile-container .budget-tile .tile-btn-container{
+    position: relative;
+    min-height: 100%;
+    min-width: 100%;
+}
+.tile-btn-container{
+    border-radius: 10px;
+}
+.tile-btn:hover,
+.tile-btn:focus{
+    background-color: var(--background-color)!important;
+    outline: 1px solid var(--income-secondary-color);
+    color: var(--income-secondary-color);
+}
+.tile-container :nth-child(1) .tile-btn:hover,
+.tile-container :nth-child(1) .tile-btn:focus{
+    outline: none;
+    color: black;
+    background-color: var(--primary-color)!important;
+}
+.main-menu-btn{
+    height: 70px;
+    font-size: 1.25rem;
+    color: var(--expense-primary-color);
+    background-color: var(--background-color);
+    border: 1px solid var(--expense-primary-color);
+    outline: none;
+    transition: background-color .3s ease-in-out, color .3s ease-in-out;
+    box-shadow: 0 1px 5px 1px rgba(0, 0, 0, .9);
+}
+.main-menu-btn:hover,
+.main-menu-btn:focus{
+    background-color: var(--expense-primary-color);
+    outline: 1px solid var(--expense-primary-color);
+    color: black;
+}

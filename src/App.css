@@ -1,0 +1,64 @@
+.App {
+  text-align: center;
+}
+.header{
+  margin-top: 100px;
+  margin-bottom: 40px;
+  color: var(--primary-color);
+}
+.text{
+  margin-bottom: 40px;
+  color: var(--secondary-color);
+}
+.btn-container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.btn{
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  border: none;
+  outline: 1px solid var(--primary-color);
+  border-radius: 10px;
+  height: 40px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.btn:hover,
+.btn:focus{
+  outline: 1px solid var(--income-secondary-color);
+  color: var(--income-secondary-color);
+}
+.link-btn{
+  text-decoration: none;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 40px;
+}
+.form input{
+  background-color: var(--secondary-color);
+  margin-bottom: 20px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  text-align: center;
+  font-weight: 700;
+}
+.form input::placeholder{
+  color: black;
+}
+.form input:active,
+.form input:focus{
+  /* outline: 1px solid var(--income-secondary-color);
+  border: 3px solid var(--background-color); */
+  outline: none;
+  border: 1px solid var(--background-color);
+  box-shadow: 0 0 5px 3px var(--income-secondary-color);
+}
+.note{
+  color: var(--text-light);
+}
