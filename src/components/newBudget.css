@@ -124,12 +124,16 @@ hr{
 .left-t-header{
     /* border-top: 1px solid var(--primary-color); */
     border-radius: 10px 0 0 0;
+    width: 40%;
 }
 .right-t-header{
     /* border: 1px solid var(--primary-color); */
     border-radius: 0 10px 0 0;
 }
 .income-table.table .income-row .crud-col{
+    width: 10%;
+}
+.expense-table.table .expense-row .crud-col{
     width: 10%;
 }
 .row-btn{
@@ -139,4 +143,26 @@ hr{
 }
 .row-btn:hover{
     background-color: var(--primary-color);
+}
+.total-income{
+    width: 50%;
+}
+.total-income-value{
+    width: 50%;
+    background-color: var(--income-secondary-color)!important;
+}
+.total-expense{
+    width: 50%;
+}
+/* .total-table{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+} */
+.total-expense-value{
+    width: 50%;
+    background-color: var(--expense-secondary-color)!important;
+}
+.surplus-row td{
+    width: 50%;
 }

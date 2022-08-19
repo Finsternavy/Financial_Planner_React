@@ -1,0 +1,37 @@
+
+.edit-row{
+    border-radius: 10px 0 0 10px!important;
+    border: none!important;
+    outline: none!important;
+    background-color: rgba(0, 0, 0, 0)!important;
+}
+.edit-btn{
+    border-radius: 10px 0 0 10px!important;
+    border: 1px solid var(--primary-color);
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+.delete-row{
+    border-radius: 10px 0 0 10px!important;
+    border: none!important;
+    outline: none!important;
+    background-color: rgba(0, 0, 0, 0)!important;
+}
+.delete-btn{
+    border-radius: 0 10px 10px 0!important;
+    border: 1px solid var(--primary-color);
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+.edit-btn:hover,
+.edit-btn:focus{
+    background-color: var(--background-color);
+    border-color: yellow;
+    color: yellow;
+}
+.delete-btn:hover,
+.delete-btn:focus{
+    background-color: var(--background-color);
+    border-color: var(--expense-primary-color);
+    color: var(--expense-primary-color);
+}

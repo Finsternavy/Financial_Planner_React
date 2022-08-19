@@ -1,4 +1,5 @@
 import { useState } from "react"
+import "../components/popup.css"
 
 const Popup = (props) => {
 
@@ -12,6 +13,14 @@ const Popup = (props) => {
     }
 
     const edit = () => {
+        if(!document.querySelector('.name-input').value){
+            alert("Please enter a new name.")
+            return
+        }
+        else if(!document.querySelector('.value-input').value){
+            alert("Please enter a value.")
+            return
+        }
         props.edit(changes)
     }
 
@@ -22,13 +31,15 @@ const Popup = (props) => {
 
     return (
         <div className="popup">
-            <div className="form">
-                <input name="source" onChange={onChange} type="text" placeholder="New Name / Source"/>
-                <input name="value" onChange={onChange} type="number" placeholder="New Value"/>
-            </div>
-            <div className="btn-container">
-                <button className="btn" onClick={edit}>Submit Changes</button>
-                <button className="btn" onClick={cancel}>Cancel Edit</button>
+            <div className="popup-container">
+                <div className="popup-form">
+                    <input className="name-input" name="source" onChange={onChange} type="text" placeholder="New Name / Source"/>
+                    <input className="value-input" name="value" onChange={onChange} type="number" placeholder="New Value"/>
+                </div>
+                <div className="popup-btn-container">
+                    <button className="popup-submit-btn" onClick={edit}>Submit Changes</button>
+                    <button className="popup-cancel-btn" onClick={cancel}>Cancel Edit</button>
+                </div>
             </div>
         </div>
     )

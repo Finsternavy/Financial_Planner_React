@@ -1,7 +1,8 @@
 import { useRef, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../components/newBudget.css"
-import Row from "../components/row"
+import IncomeRow from "../components/incomeRow"
+import ExpenseRow from "../components/expenseRow"
 import Popup from "../components/popup"
 
 
@@ -15,12 +16,15 @@ const NewBudget = () => {
         index: 0,
     })
     const [incomeRows, setIncomeRows] = useState([])
+    const [incomeTotal, setIncomeTotal] = useState(0)
     const [expenseRow, setExpenseRow] = useState({
         expenseName: "",
         expenseValue: 0,
         expensePriority: 1,
+        index: 0,
     })
     const [expenseRows, setExpenseRows] = useState([])
+    const [expenseTotal, setExpenseTotal] = useState(0)
     
     const [surplus, setSurplus] = useState(0)
     const [popup, setPopup] = useState(false)
@@ -77,12 +81,11 @@ const NewBudget = () => {
         convertedIncome = convertedIncome.toFixed(2)
         let copy = incomeRow
         copy['value'] = parseFloat(convertedIncome).toFixed(2)
-        console.log(convertedIncome)
+        calculateTotalIncome(parseFloat(convertedIncome).toFixed(2))
         setIncomeRow(prev => prev = copy) 
     }
     
     const addIncomeRow = () => {
-        console.log(parseFloat(incomeRow.value))
         if (!incomeRow['source'] || !incomeRow['value'] || !incomeRow['frequency'] ){
             alert('Please complete all income fields')
             return
@@ -103,7 +106,6 @@ const NewBudget = () => {
         setIncomeRow({})
         clearInputFields()
         updateSurplusElement(newSurplus)
-        console.log(incomeRow)
     }
 
     const expenseRowChange = (e) => {
@@ -118,12 +120,10 @@ const NewBudget = () => {
     
     const updateExpenseValue = () => {
         let convertedExpense = parseFloat(expenseRow.expenseValue).toFixed(2)
-        
-        console.log(expenseRow.expenseValue.type)
         let copy = expenseRow
-        copy['expenseValue'] = parseFloat(convertedExpense)
-        console.log(copy)
-        setExpenseRow(prev => prev = copy)
+        copy['expenseValue'] = parseFloat(convertedExpense).toFixed(2)
+        setExpenseRow(copy)
+        calculateTotalExpenses(convertedExpense)
     }
 
     const addExpenseRow = () => {
@@ -133,14 +133,12 @@ const NewBudget = () => {
         }
         setIndex(index + 1)
         updateExpenseList()
-        let newSurplus = surplus - expenseRow.expenseValue
-        console.log(newSurplus + " newsurplus")
+        let newSurplus = surplus - parseFloat(expenseRow.expenseValue)
         setSurplus(newSurplus)
         setExpenseRow({})
         clearInputFields()
         updateSurplusElement(newSurplus)
     }
-
 
     const clearInputFields = () => {
         incomeSourceField.current.value = ''
@@ -158,7 +156,6 @@ const NewBudget = () => {
     }
 
     const updateSurplusElement = (newSurplus) => {
-        console.log(newSurplus)
     
         let surplusElement = document.querySelector('.surplus-table')
 
@@ -176,31 +173,67 @@ const NewBudget = () => {
 
     const editIncomeRow = (changes) => {
         if (changes.source !== ""){
-            console.log(changes)
             let count = 0
             incomeRows.forEach(element => {
-                console.log(element.index)
-                console.log(editIndex)
                 if (element.index === editIndex){
                     let copy = [...incomeRows]
                     // set these equal to something in some way. Need some method of user providing data
                     copy[count].source = changes.source
                     copy[count].value = parseFloat(changes.value).toFixed(2)
                     setIncomeRows(copy)
+                    calculateSurplus(0, 0)
                     togglePopup()
                     return
                 }
                 count += 1
             });
+            count = 0
+            expenseRows.forEach(element => {
+                if (element.index === editIndex){
+                    let copy = [...expenseRows]
+                    copy[count].expenseName = changes.source
+                    copy[count].expenseValue = parseFloat(changes.value).toFixed(2)
+                    setExpenseRows(copy)
+                    calculateSurplus(0, 0)
+                    togglePopup()
+                    return
+                }
+                count += 1
+            })
         }
-        // need a function to recalculate surplus
         togglePopup()
     }
+    const calculateSurplus = (incomeOffset, expenseOffset) => {
+        let totalIncome = 0.00
+        let totalExpenses = 0.00
+        totalIncome = calculateTotalIncome(parseFloat(incomeOffset))
+        totalExpenses = calculateTotalExpenses(parseFloat(expenseOffset))
 
-    //need a function to calculate total of all income rows
+        let newSurplus = 0.00
+        newSurplus = totalIncome - totalExpenses
+        setSurplus(newSurplus)
+        updateSurplusElement(newSurplus)
+    }
 
+    const calculateTotalIncome = (currentValue) => {
+        let total = parseFloat(currentValue)
+        incomeRows.forEach(element => {
+            total += parseFloat(element.value)
+        });
+        total = total.toFixed(2)
+        setIncomeTotal(total)
+        return parseFloat(total)
+    }
 
-    // need a function to calculate total of all expense rows
+    const calculateTotalExpenses = (currentValue) => {
+        let total = parseFloat(currentValue)
+        expenseRows.forEach(element => {
+            total += parseFloat(element.expenseValue)
+        });
+        total = total.toFixed(2)
+        setExpenseTotal(total)
+        return parseFloat(total)
+    }
 
     const togglePopup = (rowIndex) => {
         if (popup){
@@ -214,12 +247,29 @@ const NewBudget = () => {
 
     const deleteIncomeRow = (rowIndex) => {
         let count = 0
+        let incomeOffset = 0
         incomeRows.forEach(element => {
-            console.log(element.index)
             if (element.index === rowIndex){
+                incomeOffset = element.value * -1
+                calculateSurplus(incomeOffset, 0)
                 let copy = [...incomeRows]
                 copy.splice(count, 1)
                 setIncomeRows(copy)
+            }
+            count += 1
+        });
+    }
+
+    const deleteExpenseRow = (rowIndex) => {
+        let count = 0
+        let expenseOffset = 0
+        expenseRows.forEach(element => {
+            if (element.index === rowIndex){
+                expenseOffset = element.expenseValue * -1
+                calculateSurplus(0, expenseOffset)
+                let copy = [...expenseRows]
+                copy.splice(count, 1)
+                setExpenseRows(copy)
             }
             count += 1
         });
@@ -247,8 +297,6 @@ const NewBudget = () => {
                     incomeRow.frequency === '/hourly' && <input ref={hoursField} name='hours' onChange={incomeRowChange} type="number" step={"0"} placeholder="Hours a week"/>
                 }
             </div>
-
-            {/* template data for testing only ---- remove when implementing logic  ------  */}
             {
                 popup &&
                 <Popup edit={editIncomeRow} toggle={togglePopup}></Popup>
@@ -256,30 +304,31 @@ const NewBudget = () => {
             <table className="income-table table">
                 <tbody>
                     <tr>
+                        <th className="edit-t-header">
+
+                        </th>
                         <th className="table-header left-t-header">
                             Income Source
                         </th>
                         <th className="table-header right-t-header">
                             Income Value (Per Month)
                         </th>
+                        <th className="delete-t-header">
+
+                        </th>
                     </tr>
                     {
-                        //convert to custom row component
                         incomeRows.map((incomeRow) => (
-                            <Row key={incomeRow.index} data={incomeRow} delete={deleteIncomeRow} toggle={togglePopup}></Row>
-                        // <tr key={incomeRow.index} className="income-row row">
-                        //     <td key={incomeRow.source}>{incomeRow.source}</td>
-                        //     <td key={incomeRow.value} className="income-data data">${incomeRow.value.toFixed(2)}</td>
-                        //     <td key={incomeRow.index + incomeRow.source} className="crud-col">
-                        //         <button className="row-btn" onClick={editRow}>Edit</button>
-                        //     </td>
-                        //     <td key={incomeRow.index + incomeRow.source + incomeRow.index} className="crud-col" onClick={deleteRow}>
-                        //         <button className="row-btn">X</button>
-                        //     </td>
-                        // </tr>
+                            <IncomeRow key={incomeRow.index} data={incomeRow} delete={deleteIncomeRow} toggle={togglePopup}></IncomeRow>
                         ))
                     }
-                    {/* <td>Employment</td><td className="income-data data">$4,000.00 / Monthly</td> */}
+                </tbody>
+            </table>
+            <table className="income-table table total-table">
+                <tbody>
+                    <tr className="income-row left-t-header">
+                        <td className="total-income">Total Income</td><td className="total-income-value">${incomeTotal}</td>
+                    </tr>
                 </tbody>
             </table>
 
@@ -304,12 +353,16 @@ const NewBudget = () => {
             <table className="expense-table table">
                 <tbody>
                     <tr className="expense-row">
+                        <th className="edit-t-header">
+
+                        </th>
                         <th className="table-header left-t-header">
                             Expense / Priority
                         </th>
-                        <th className="table-header center-t-header">
+                        <th className="table-header right-t-header">
                             Expense Value
                         </th>
+                        <th className="delete-t-header"></th>
                         {/* <th className="priority-data"></th> */}
                         {/* <th className="table-header right-t-header priority-data">
                             Priority
@@ -317,18 +370,22 @@ const NewBudget = () => {
                     </tr>
                     {
                         expenseRows.map((expenseRow) => (
-                        <tr key={expenseRow.index} className="expense-row row">
-                            <td key={expenseRow.expenseName}>{expenseRow.expenseName} : {expenseRow.expensePriority}</td>
-                            <td key={expenseRow.expenseValue} className="expense-data data">${expenseRow.expenseValue.toFixed(2)}</td>
-                        </tr>
+                            <ExpenseRow key={expenseRow.index} data={expenseRow} delete={deleteExpenseRow} toggle={togglePopup}></ExpenseRow>
                         ))
                     }
+                </tbody>
+            </table>
+            <table className="expense-table table total-table">
+                <tbody>
+                    <tr className="expense-row left-t-header">
+                        <td className="total-expense">Total Expenses</td><td className="total-expense-value">${expenseTotal}</td>
+                    </tr>
                 </tbody>
             </table>
 
             <hr />
 
-            <table className="surplus-table table">
+            <table className="surplus-table table total-table">
                 <tbody>
                     {surplus < 0 && 
                         <tr className="surplus-row row">
@@ -340,11 +397,8 @@ const NewBudget = () => {
                             <td>Surplus / Deficit</td><td className="surplus-data">${surplus.toFixed(2)}</td>
                         </tr>
                     }
-                    
                 </tbody>
             </table>
-
-            {/* template data for testing only ---- remove when implementing logic  ------  */}
 
             <div className="btn-container">
                 <button className="btn" onClick={saveBudget}>Save Budget</button>
