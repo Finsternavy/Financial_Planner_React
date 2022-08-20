@@ -1,30 +1,85 @@
-.new-budget .add-line-tool{
-    display: grid;
-    grid-template-columns: calc(33% - 10px) repeat(2, calc(33% - 5px));
-    gap: 10px;
-    margin-bottom: 40px;
+.income-tables-container{
+    background-color: var(--background-color);
 }
-.new-budget .add-line-tool > *{
+.open-btn-container{
+    width: calc(100% - 4px);
+    margin-left: auto;
+    margin-right: auto;
+}
+.open-btn{
+    width: 100%;
+    padding: 5px;
+    background-color: var(--background-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 10px 10px 0 0;
+    color: var(--primary-color);
+    text-transform: uppercase;
+}
+.open-btn:hover,
+.open-btn-focus{
+    color: yellow;
+    border-color: yellow;
+}
+
+.new-budget .add-income-line-tool,
+.new-budget .add-expense-line-tool{
+    position: relative;
+    /* z-index: 0; */
+    display: grid;
+    grid-template-columns: calc(33% - 6px) calc(34% - 7px) calc(33% - 6px);
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    width: calc(100% - 4px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-block: 3px;
+    pointer-events: none;
+    opacity: 0;
+    /* height: 0; */
+    max-height: 0;
+    /* transform: translateY(200px); */
+    transition: max-height .5s ease-in-out, opacity .5s ease-in-out, margin-bottom .5s ease-in-out, margin-top .5s ease-in-out;
+    overflow: hidden;
+}
+.new-budget .add-income-line-tool.open,
+.new-budget .add-expense-line-tool.open{
+    /* transform: translateY(0); */
+    margin-bottom: 40px;
+    margin-top: 5px;
+    opacity: 1;
+    max-height: 300px;
+    pointer-events: auto;
+}
+.open-btn.open{
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+.new-budget .add-income-line-tool > *:not(.tool-btn-container),
+.new-budget .add-expense-line-tool > *:not(.tool-btn-container){
     min-width: 100%;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 0!important;
     border: none;
     text-align: center;
     background-color: var(--secondary-color);
 }
-.new-budget .add-line-tool > *:active,
-.new-budget .add-line-tool > *:focus{
+.new-budget .add-income-line-tool > *:active,
+.new-budget .add-income-line-tool > *:focus,
+.new-budget .add-expense-line-tool > *:active,
+.new-budget .add-expense-line-tool > *:focus{
     border: none;
     outline: none;
     box-shadow: inset 0 0 5px 3px var(--income-secondary-color);
 }
-.new-budget .add-line-tool input::placeholder{
+.new-budget .add-income-line-tool input::placeholder,
+.new-budget .add-expense-line-tool input::placeholder{
     font-weight: 700;
 }
 .add-btn-container{
-    border-radius: 10px;
+    /* border-radius: 10px; */
     overflow: hidden;
-    outline: 3px solid var(--primary-color);
+    outline: 1px solid var(--primary-color);
 }
 .add-btn-container:hover,
 .add-btn-container:hover > button{
@@ -44,54 +99,72 @@ hr{
     background-color: var(--background-color);
     border: none;
     color: var(--primary-color);
-    font-size: 5rem;
+    font-size: 1rem;
+}
+.tool-btn-container{
+    border: none;
+    outline: none;
+    width: calc(100% - 1px);
+}
+.tool-btn{
+    background-color: var(--income-secondary-color);
+    border: 1px solid var(--income-secondary-color);
+    border-radius: 0 0 10px 10px;
+    color: var(--background-color);
+    height: 30px;
+    transition: background-color .3s ease-in-out;
+}
+.expense-tool-btn{
+    background-color: var(--expense-primary-color);
+    border-color: var(--expense-primary-color);
+    width: calc(100% - 1px);
+}
+.tool-btn:hover,
+.tool.btn:focus{
+    color: var(--income-secondary-color);
+    background-color: var(--background-color);
+    border-color: var(--income-secondary-color);
+}
+.expense-tool-btn:hover,
+.expense-tool.btn:focus{
+    color: var(--expense-primary-color);
+    background-color: var(--background-color);
+    border-color: var(--expense-primary-color);
 }
 .expense-btn:hover,
 .expense-btn:focus{
     color: var(--expense-primary-color);
 
 }
-.new-budget .add-line-tool > *::placeholder{
+.new-budget .add-income-line-tool > *::placeholder,
+.new-budget .add-expense-line-tool > *::placeholder{
     color: var(--text-dark);
 }
-.new-budget .add-line-tool :nth-child(1){
-    grid-row: 1 / 3;
+.new-budget .add-income-line-tool :nth-child(1),
+.new-budget .add-expense-line-tool :nth-child(1){
+    grid-column: 1 / 2;
     min-height: 100%;
     min-width: 100%;
 }
-.new-budget .add-line-tool :nth-child(2){
-    grid-column: 2 / 4;
+/* .new-budget .add-income-line-tool :nth-child(2),
+.new-budget .add-expense-line-tool :nth-child(2){
+    grid-column: 1 / 2;
+} */
+.new-budget .add-income-line-tool .hours{
+    grid-column: 1 / 4;
 }
-.new-budget .add-line-tool :nth-last-child(1){
-    grid-column: 3 / 4;
+.new-budget .add-income-line-tool :nth-last-child(1),
+.new-budget .add-expense-line-tool :nth-last-child(1){
+    grid-column: 1 / 4;
 }
 .table{
     width: 100%;
-    margin-bottom: 40px;
     display: table;
 }
 .table td{
-    background-color: var(--btn-color-logout);
+    background-color: var(--text-light);
     border: 1px solid black;
     height: 40px;
-}
-.table tbody :nth-child(1) :nth-child(1){
-    border-radius: 10px 0 0 0;
-}
-.table tbody :nth-last-child(1) :nth-last-child(1){
-    border-radius: 0 0 10px;
-}
-.table tbody :nth-child(1) :nth-last-child(1){
-    border-radius:  0 10px 0 0;
-}
-.table tbody :nth-last-child(1) :nth-child(1){
-    border-radius: 0 0 0 10px;
-}
-.table tbody :only-child :nth-child(1){
-    border-radius: 10px 0 0 10px;
-}
-.table tbody :only-child :nth-last-child(1){
-    border-radius: 0 10px 10px 0;
 }
 .expense-table tbody :nth-child(even) .expense-data{
     background-color: var(--expense-secondary-color);
@@ -105,36 +178,52 @@ hr{
 .income-table :nth-child(odd) .income-data{
     background-color: var(--income-secondary-color);
 }
-.surplus-table :only-child .data{
+/* .surplus-table :only-child .data{
     background-color: var(--income-primary-color);
-}
+} */
 .surplus-table.surplus tbody tr .surplus-data{
     background-color: var(--income-primary-color);
 }
 .surplus-table.deficit tbody tr .surplus-data{
     background-color: var(--expense-primary-color)!important;
 }
-.table-header{
-    color: var(--background-color);
-    border: 1px solid var(--background-color);
-    background-color: var(--primary-color);
-    padding: 3px;
-    font-size: .8rem;
-}
-.left-t-header{
-    /* border-top: 1px solid var(--primary-color); */
-    border-radius: 10px 0 0 0;
-    width: 40%;
-}
-.right-t-header{
-    /* border: 1px solid var(--primary-color); */
-    border-radius: 0 10px 0 0;
-}
 .income-table.table .income-row .crud-col{
     width: 10%;
 }
 .expense-table.table .expense-row .crud-col{
     width: 10%;
+}
+.data{
+    width: 40%;
+}
+
+.table-headers{
+    display: flex;
+    width: calc(100% - 4px);
+    margin-left: auto;
+    margin-right: auto;
+    /* background-color: var(--primary-color); */
+    justify-content: space-between;
+    text-transform: uppercase;
+}
+.table-headers > *{
+    width: 50%;
+    min-height: 30px;
+    background-color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-inline-start: 4px; */
+}
+/* .table-headers > * p{
+    height: 100%;
+} */
+.left-header{
+    margin-right: 3px;
+    border-top-right-radius: 10px;
+}
+.right-header{
+    border-top-left-radius: 10px;
 }
 .row-btn{
     height: 100%;
@@ -145,24 +234,48 @@ hr{
     background-color: var(--primary-color);
 }
 .total-income{
-    width: 50%;
+    width: 100%;
+    text-transform: uppercase;
 }
 .total-income-value{
     width: 50%;
-    background-color: var(--income-secondary-color)!important;
+    background-color: var(--income-primary-color)!important;
 }
 .total-expense{
     width: 50%;
+    text-transform: uppercase;
 }
-/* .total-table{
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-} */
+.total-table{
+    outline: none;
+    width: 100%;
+    margin-bottom: 40px;
+}
+.total-table > *{
+    background-color: var(--primary-color);
+}
+.total-table > * > *{
+    height: 40px;
+}
+
 .total-expense-value{
     width: 50%;
     background-color: var(--expense-secondary-color)!important;
 }
 .surplus-row td{
     width: 50%;
+}
+.total-table tbody .total-income-value,
+.total-table tbody .total-expense-value,
+.total-table tbody .surplus-data{
+    border-radius: 0 0 20px 20px;
+    /* background-color: purple!important; */
+}
+.total-table tbody .surplus-total-title{
+    border-radius: 10px 10px 0 0;
+    text-transform: uppercase;
+    /* background-color: purple!important; */
+}
+.total-table tbody .surplus-data{
+    border-radius: 0 0 10px 10px;
+    /* background-color: purple!important; */
 }

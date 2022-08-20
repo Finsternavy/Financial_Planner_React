@@ -50,7 +50,7 @@
 }
 .popup-submit-btn,
 .popup-cancel-btn{
-    height: 30px;
+    height: 40px;
     margin-inline: 20px;
     margin-bottom: 20px;
     width: calc(100% - 80px);

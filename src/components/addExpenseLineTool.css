@@ -1,0 +1,11 @@
+.add-expense-line-tool .loan-info{
+    background-color: var(--primary-color)!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.add-expense-line-tool .loan-info > * {
+
+}

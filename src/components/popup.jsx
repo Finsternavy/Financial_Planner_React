@@ -4,8 +4,8 @@ import "../components/popup.css"
 const Popup = (props) => {
 
     const [changes, setChanges] = useState({
-        source: "",
-        value: 0,
+        source: props.editName,
+        value: props.editValue,
     })
 
     const onChange = (e) => {
@@ -13,14 +13,6 @@ const Popup = (props) => {
     }
 
     const edit = () => {
-        if(!document.querySelector('.name-input').value){
-            alert("Please enter a new name.")
-            return
-        }
-        else if(!document.querySelector('.value-input').value){
-            alert("Please enter a value.")
-            return
-        }
         props.edit(changes)
     }
 

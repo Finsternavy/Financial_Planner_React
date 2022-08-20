@@ -2,9 +2,9 @@ import "../components/row.css"
 
 const IncomeRow = (props) => {
 
-    const show = (changes) => {
+    const edit = () => {
         console.log("got here")
-        props.toggle(props.data.index)
+        props.toggle(props.data)
     }
 
     const deleteRow = () => {
@@ -14,7 +14,7 @@ const IncomeRow = (props) => {
     return(
         <tr className="income-row">
             <td className="crud-col edit-row">
-                <button className="row-btn edit-btn" onClick={show}>Edit</button>
+                <button className="row-btn edit-btn" onClick={edit}>Edit</button>
             </td>
             <td className="data">{props.data.source}</td>
             <td className="income-data data">${props.data.value}</td>
