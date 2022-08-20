@@ -60,18 +60,10 @@ const AddIncomeLineTool = (props) => {
         
     }
 
-    // const toggleTool = () => {
-    //     let element = document.querySelector('.add-income-line-tool')
-
-    //     element.classList.toggle("open")
-    // }
 
     return(
 
         <div className="add-income-line-tool">
-            {/* <div className="add-btn-container">
-                <button className="open-btn" onClick={toggleTool}>Open Insert Tool</button>
-            </div> */}
             <input ref={incomeSourceField} name="source" type="text" placeholder="Source of Income" onChange={incomeRowChange}/>
             <input ref={incomeValueField} name="value" type="number" step={"0.01"} placeholder="0.00" onChange={incomeRowChange}/>
             <select ref={incomeFrequencyField} name='frequency' id="frequency" onChange={incomeRowChange} className="frequency-dropdown dropdown">

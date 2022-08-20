@@ -36,7 +36,6 @@ const AddExpenseLineTool = (props) => {
             alert('Please complete all expense fields')
             return
         }
-        // convertIncomeFrequency()
         clearInputFields()
         props.update(expenseRow)
         setExpenseRow({})
@@ -46,23 +45,16 @@ const AddExpenseLineTool = (props) => {
         expenseNameField.current.value = ''
         expenseValueField.current.value = ''
         expensePriorityField.current.value = ''
-        expenseAPRField.current.value = ''
-        expenseBalanceField.current.value = ''
 
         expenseNameField.current.placeholder ='Expense Name'
         expenseValueField.current.placeholder ='$0.00'
         expensePriorityField.current.placeholder = "Priority"
-        expenseAPRField.current.placeholder = 'APR %'
-        expenseBalanceField.current.placeholder = 'Remaining Payments'
         
     }
 
     return(
 
         <div className="add-expense-line-tool">
-            {/* <div className="add-btn-container">
-                <button className="open-btn" onClick={toggleTool}>Open Insert Tool</button>
-            </div> */}
             <input ref={expenseNameField} name="expenseName" type="text" placeholder="Expense Name" onChange={expenseRowChange}/>
             <input ref={expenseValueField} name="expenseValue" type="number" step={"0.01"} placeholder="0.00" onChange={expenseRowChange}/>
             <select ref={expensePriorityField} name='expensePriority' id="priority" onChange={expenseRowChange} className="priority-dropdown dropdown">
