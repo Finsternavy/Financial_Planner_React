@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import "../components/newBudget.css"
 import IncomeRow from "../components/incomeRow"
@@ -6,9 +6,15 @@ import ExpenseRow from "../components/expenseRow"
 import AddIncomeLineTool from "../components/addIncomeLineTool"
 import AddExpenseLineTool from "../components/addExpenseLineTool"
 import Popup from "../components/popup"
+import DataContext from "../context/dataContext"
+import DataService from "../services/dataService"
 
+// Add a way to title the new budget
 
 const NewBudget = () => {
+    let budget = useContext(DataContext).budget
+    let setBudget = useContext(DataContext).setBudget
+
     const [index, setIndex] = useState(0)
     const [incomeRows, setIncomeRows] = useState([])
     const [incomeTotal, setIncomeTotal] = useState(0)
@@ -22,13 +28,59 @@ const NewBudget = () => {
     const [editName, setEditName] = useState('')
     const [editValue, setEditValue] = useState(0)
 
+
+    const loadBudget = () => {
+        console.log(budget)
+        let incomeCopy = [...incomeRows]
+        let expenseCopy = [...expenseRows]
+        budget['income'].forEach(row => {
+            incomeCopy.push(row)
+        })
+        budget['expenses'].forEach(row => {
+            expenseCopy.push(row)
+        })
+
+        setIncomeRows(incomeCopy)
+        setExpenseRows(expenseCopy)
+        setIncomeTotal(budget['income_total'])
+        setExpenseTotal(budget['expense_total'])
+        setSurplus(budget['surplus'])
+        updateSurplusElement(budget['surplus'])
+        setIndex(budget['next_index'])
+    }
+
+    useEffect(()=>{
+        if (budget['title']){
+            loadBudget()
+            console.log("I ran")
+        }
+    }, [])
+
     // these values are used to reset input fields after submitting the changes to the lists (income / expenses)
     
 
     let navigate = useNavigate()
 
-    const saveBudget = () => {
-        alert("Budget saved successfully!")
+    const saveBudget = async() => {
+        budget['title'] = "Chris's Budget"
+        budget['income_total'] = incomeTotal
+        budget['expense_total'] = expenseTotal
+        budget['surplus'] = surplus
+        countBudgetIndex()
+        let service = new DataService()
+        let data = await service.postBudget(budget)
+        console.log(data)
+    }
+
+    const countBudgetIndex = () => {
+        let count = 0
+        budget['income'].forEach(element => {
+            count += 1
+        })
+        budget['expenses'].forEach(element => {
+            count += 1
+        })
+        budget['next_index'] = count
     }
 
     const budgetHome = () => {
@@ -43,18 +95,20 @@ const NewBudget = () => {
     }
     
     const addIncomeRow = (newRow) => {
-        if (!newRow.source || !newRow.value || !newRow.frequency ){
-            alert('Please complete all income fields')
-            return
-        }
-        if (parseFloat(newRow.value) < 0.01){
-            alert('Income value must at least 1 penny.')
-            return
-        }
-        if (newRow.frequency === '/hourly' && newRow.hours === 0){
-            alert('Hours worked must be greater than zero.')
-            return
-        }
+        // if (!newRow.source || !newRow.value || !newRow.frequency ){
+        //     alert('Please complete all income fields')
+        //     return
+        // }
+        // if (parseFloat(newRow.value) < 0.01){
+        //     alert('Income value must at least 1 penny.')
+        //     return
+        // }
+        // if (newRow.frequency === '/hourly' && newRow.hours === 0){
+        //     alert('Hours worked must be greater than zero.')
+        //     return
+        // }
+        // newRow['index'] = index
+        console.log(newRow)
         setIndex(index + 1)
         updateIncomeList(newRow)
         let newSurplus = surplus + parseFloat(newRow.value)
@@ -119,7 +173,7 @@ const NewBudget = () => {
         if (changes.source !== ""){
             let count = 0
             incomeRows.forEach(element => {
-                if (element.index === editIndex){
+                if (element._id === editIndex){
                     let copy = [...incomeRows]
                     copy[count].source = nameChange
                     copy[count].value = parseFloat(valueChange).toFixed(2)
@@ -199,13 +253,26 @@ const NewBudget = () => {
     const deleteIncomeRow = (rowIndex) => {
         let count = 0
         let incomeOffset = 0
+        console.log(rowIndex)
         incomeRows.forEach(element => {
+            console.log(element.index + " : " + rowIndex)
             if (element.index === rowIndex){
                 incomeOffset = element.value * -1
                 calculateSurplus(incomeOffset, 0)
                 let copy = [...incomeRows]
                 copy.splice(count, 1)
                 setIncomeRows(copy)
+                let rowCount = 0
+                budget['income'].forEach(row => {
+                    if (row.index === rowIndex){
+                        budget['income'].splice(rowCount, 1)
+                        console.log(budget)
+                        return
+                    }else{
+                        rowCount += 1
+                    }
+                })
+                return
             }
             count += 1
         });
@@ -285,7 +352,7 @@ const NewBudget = () => {
                     <tbody>
                         {
                             incomeRows.map((incomeRow) => (
-                                <IncomeRow key={incomeRow.index} data={incomeRow} delete={deleteIncomeRow} toggle={togglePopup}></IncomeRow>
+                                <IncomeRow key={incomeRow._id} data={incomeRow} delete={deleteIncomeRow} toggle={togglePopup}></IncomeRow>
                             ))
                         }
                     </tbody>
@@ -323,7 +390,7 @@ const NewBudget = () => {
                 <tbody>
                     {
                         expenseRows.map((expenseRow) => (
-                            <ExpenseRow key={expenseRow.index} data={expenseRow} delete={deleteExpenseRow} toggle={togglePopup}></ExpenseRow>
+                            <ExpenseRow key={expenseRow._id} data={expenseRow} delete={deleteExpenseRow} toggle={togglePopup}></ExpenseRow>
                         ))
                     }
                 </tbody>

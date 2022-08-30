@@ -1,12 +1,19 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useContext } from "react"
 import "../components/addExpenseLineTool.css"
+import DataContext from "../context/dataContext"
 
 const AddExpenseLineTool = (props) => {
 
+    let budget = useContext(DataContext).budget
+    let setBudget = useContext(DataContext).setBudget
+
     const [expenseRow, setExpenseRow] = useState({
-        expenseName: '',
-        expenseValue: 0,
-        expensePriority: '',
+        "expenseName": '',
+        "expenseValue": 0,
+        "expensePriority": '',
+        "apr": 0,
+        "term": 0
+
     })
     const expenseNameField = useRef(null)
     const expenseValueField = useRef(null)
@@ -15,7 +22,7 @@ const AddExpenseLineTool = (props) => {
     const expenseBalanceField = useRef(null)
 
     const expenseRowChange = (e) => {
-        setExpenseRow(prev=>({...prev, ['index']:props.index}))
+        // setExpenseRow(prev=>({...prev, ['index']:props.index}))
         setExpenseRow(prev=>({...prev, [e.target.name]:e.target.value}))
     }
 
@@ -29,16 +36,16 @@ const AddExpenseLineTool = (props) => {
 
     const addExpenseRow = () => {
         updateExpenseValue()
-        console.log(expenseRow.expenseName)
-        console.log(expenseRow.expenseValue)
-        console.log(expenseRow.expensePriority)
         if (!expenseRow.expenseName || !expenseRow.expenseValue || !expenseRow.expensePriority){
             alert('Please complete all expense fields')
             return
         }
         clearInputFields()
         props.update(expenseRow)
+        let copy = {...budget}
+        copy['expenses'].push((expenseRow))
         setExpenseRow({})
+        console.log(budget)
     }
 
     const clearInputFields = () => {

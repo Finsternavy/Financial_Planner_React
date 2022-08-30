@@ -1,12 +1,16 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useContext } from "react"
+import DataContext from "../context/dataContext"
 
 const AddIncomeLineTool = (props) => {
 
+    let budget = useContext(DataContext).budget
+    let setBudget = useContext(DataContext).setBudget
+
     const [incomeRow, setIncomeRow] = useState({
-        source: "",
-        value: 0,
-        frequency: '/monthly',
-        hours: 0,
+        "source": "",
+        "value": 0,
+        "frequency": '/monthly',
+        "hours": 0
     })
     const incomeSourceField = useRef(null)
     const incomeValueField = useRef(null)
@@ -14,7 +18,7 @@ const AddIncomeLineTool = (props) => {
     const incomeHourlyField = useRef(null)
 
     const incomeRowChange = (e) => {
-        setIncomeRow(prev=>({...prev, ['index']:props.index}))
+        // setIncomeRow(prev=>({...prev, ['_id']:props._id}))
         setIncomeRow(prev=>({...prev, [e.target.name]:e.target.value}))
     }
 
@@ -42,10 +46,28 @@ const AddIncomeLineTool = (props) => {
     }
 
     const addIncomeRow = () => {
+        if (!incomeRow.source || !incomeRow.value || !incomeRow.frequency ){
+            alert('Please complete all income fields')
+            return
+        }
+        if (parseFloat(incomeRow.value) < 0.01){
+            alert('Income value must at least 1 penny.')
+            return
+        }
+        if (incomeRow.frequency === '/hourly' && incomeRow.hours === 0){
+            alert('Hours worked must be greater than zero.')
+            return
+        }
         convertIncomeFrequency()
         clearInputFields()
-        props.update(incomeRow)
+        let rowCopy = {...incomeRow}
+        rowCopy['index'] = props.index
+        props.update(rowCopy)
+        let copy = {...budget}
+        copy['income'].push(incomeRow)
+        setBudget(copy)
         setIncomeRow({})
+        console.log(budget)
     }
 
     const clearInputFields = () => {

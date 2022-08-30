@@ -8,6 +8,7 @@ const IncomeRow = (props) => {
     }
 
     const deleteRow = () => {
+        console.log("deleting element at index: " + props.data.index)
         props.delete(props.data.index)
     }
 

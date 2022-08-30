@@ -7,7 +7,7 @@ const ExpenseRow = (props) => {
     }
 
     const deleteRow = () => {
-        props.delete(props.data.index)
+        props.delete(props.data._id)
     }
 
 
